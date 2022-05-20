@@ -1,0 +1,18 @@
+<project name="c172atom">
+  <struct>
+    <item ref="swsys1">
+      <item ref="flow_control" />
+      <item ref="fsm_startup" />
+      <item ref="ibr_flightgear" />
+      <item ref="ibr_udpcmd" />
+    </item>
+  </struct>
+
+  <list>
+    <item id="flow_control" type="flow">config/flow_control.xml</item>
+    <item id="fsm_startup" type="fsm">config/fsm_startup.xml</item>
+    <item id="ibr_flightgear" type="ibr">config/ibr_flightgear.xml</item>
+    <item id="ibr_udpcmd" type="ibr">config/ibr_udpcmd.xml</item>
+    <item id="swsys1" type="swsys">config/swsys.xml</item>
+  </list>
+</project>

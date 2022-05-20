@@ -151,18 +151,53 @@
             <state name="heating_up">
             </state>
 
-            <t from="_begin_" to="prestart_setup"><c>timeout(1.0)</c></t>
-            <t from="prestart_setup" to="primer_pull"><c>timeout(1.0)</c></t>
-            <t from="primer_pull" to="primer_push"><c>timeout(2.0)</c></t>
-            <t from="primer_push" to="primer_pull"><c>timeout(2.0)</c></t>
-            <t from="primer_push" to="magnetos_on"><c>primer_push_cnt >= primer_push_cycles</c></t>
-            <t from="magnetos_on" to="stopped"><c>timeout(2.0)</c></t>
-            <t from="stopped" to="starter_on"><c>timeout(2.0)</c></t>
-            <t from="stopped" to="failed"><c>starting_attempts_cnt >=3</c></t>
-            <t from="starter_on" to="stopped"><c>timeout(4.0)</c></t>
-            <t from="starter_on" to="started"><c>trueduring((rpm > rpm_start_threshold) &amp;&amp; (egt > egt_threshold), 1.0)</c></t>
-            <t from="started" to="heating_up"><c>timeout(2.0) &amp;&amp; trueduring(rpm > rpm_start_threshold, 4.0)</c></t>
-            <t from="heating_up" to="_end_"><c>timeout(2.0) &amp;&amp; trueduring(cht > cht_threshold, 2.0)</c></t>
+            <transition from="_begin_" to="prestart_setup">
+                <cond>timeout(1.0)</cond>
+            </transition>
+
+            <transition from="prestart_setup" to="primer_pull">
+                <cond>timeout(1.0)</cond>
+            </transition>
+
+            <transition from="primer_pull" to="primer_push">
+                <cond>timeout(2.0)</cond>
+            </transition>
+
+            <transition from="primer_push" to="primer_pull">
+                <cond>timeout(2.0)</cond>
+            </transition>
+
+            <transition from="primer_push" to="magnetos_on">
+                <cond>primer_push_cnt >= primer_push_cycles</cond>
+            </transition>
+
+            <transition from="magnetos_on" to="stopped">
+                <cond>timeout(2.0)</cond>
+            </transition>
+
+            <transition from="stopped" to="starter_on">
+                <cond>timeout(2.0)</cond>
+            </transition>
+
+            <transition from="stopped" to="failed">
+                <cond>starting_attempts_cnt >=3</cond>
+            </transition>
+
+            <transition from="starter_on" to="stopped">
+                <cond>timeout(4.0)</cond>
+            </transition>
+
+            <transition from="starter_on" to="started">
+                <cond>trueduring((rpm > rpm_start_threshold) &amp;&amp; (egt > egt_threshold), 1.0)</cond>
+            </transition>
+
+            <transition from="started" to="heating_up">
+                <cond>timeout(2.0) &amp;&amp; trueduring(rpm > rpm_start_threshold, 4.0)</cond>
+            </transition>
+
+            <transition from="heating_up" to="_end_">
+                <cond>timeout(2.0) &amp;&amp; trueduring(cht > cht_threshold, 2.0)</cond>
+            </transition>
         </state>
 
         <state name="idle">
@@ -177,9 +212,17 @@
             <state name="wait_stop">
             </state>
             <!-- TODO wait egt -->
-            <t from="_begin_" to="trigger_stop"><c>true</c></t>
-            <t from="trigger_stop" to="wait_stop"><c>timeout(0.5)</c></t>
-            <t from="wait_stop" to="_end_"><c>trueduring(rpm &lt; 10, 2)</c></t>
+            <transition from="_begin_" to="trigger_stop">
+                <cond>true</cond>
+            </transition>
+
+            <transition from="trigger_stop" to="wait_stop">
+                <cond>timeout(0.5)</cond>
+            </transition>
+
+            <transition from="wait_stop" to="_end_">
+                <cond>trueduring(rpm &lt; 10, 2)</cond>
+            </transition>
         </state>
 
         <state name="shutting_down">
